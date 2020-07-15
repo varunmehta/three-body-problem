@@ -1,0 +1,35 @@
+pipeline {
+  agent any
+
+  stages {
+
+    stage('Checkout') {
+      steps {
+        checkout scm
+      }
+    }
+
+    stage('Unit & Integration Tests') {
+      steps {
+        script {
+          try {
+            sh './gradlew clean test --no-daemon sonarqube \
+                          -Dsonar.host.url=http://sonarqube:9000 \
+                          -Dsonar.login=d98bad7d17e8d448d374c9289c7ae87040eb5a3e \
+                          -Dsonar.projectKey=TRISOLAR'
+          } finally {
+            junit '**/build/test-results/test/*.xml'
+          }
+        }
+      }
+    }
+
+    stage('Dockerize') {
+      steps {
+        script {
+          sh './gradlew docker'
+        }
+      }
+    }
+  }
+}

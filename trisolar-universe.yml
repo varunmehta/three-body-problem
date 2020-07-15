@@ -1,0 +1,69 @@
+# Everything required for the ecosystem to run is dockerized by this file as a docker-compose.
+version: '3.1'
+
+services:
+  sonar:
+    image: sonarqube
+    command: -Dsonar.ce.javaOpts=-Xmx1192m -Dsonar.web.javaOpts=-Xmx1192m
+    container_name: sonarqube
+    restart: unless-stopped
+    networks:
+      - cicd
+    depends_on:
+      - sonarqube_db
+    ports:
+      - "9000:9000"
+    environment:
+      - sonar.jdbc.username=sonar
+      - sonar.jdbc.password=sonar
+      - sonar.jdbc.url=jdbc:postgresql://sonarqube_db:5432/sonar
+    volumes:
+      - sonarqube_conf:/opt/sonarqube/conf
+      - sonarqube_data:/opt/sonarqube/data
+      - sonarqube_extensions:/opt/sonarqube/extensions
+      - sonarqube_bundled-plugins:/opt/sonarqube/lib/bundled-plugins
+    ulimits:
+      nofile:
+         soft: 65536
+         hard: 65536
+
+  # This is not for the applications, used only sonarqube
+  sonarqube_db:
+    image: postgres:10.11
+    container_name: sonarqube_db
+    networks:
+      - cicd
+    environment:
+      - POSTGRES_USER=sonar
+      - POSTGRES_PASSWORD=sonar
+    volumes:
+      - postgresql:/var/lib/postgresql
+      - postgresql_data:/var/lib/postgresql/data
+
+  jenkins:
+    image: jenkinsci/blueocean
+    user: root
+    networks:
+      - cicd
+    ports:
+      - "8080:8080"
+      - "8443:8443"
+      - "50000:50000"
+    volumes:
+      - jenkins_data:/var/jenkins_home
+      - jenkins_home:/home
+      - /var/run/docker.sock:/var/run/docker.sock
+
+networks:
+  cicd:
+    driver: bridge
+
+volumes:
+  jenkins_data:
+  jenkins_home:
+  sonarqube_conf:
+  sonarqube_data:
+  sonarqube_extensions:
+  sonarqube_bundled-plugins:
+  postgresql:
+  postgresql_data:

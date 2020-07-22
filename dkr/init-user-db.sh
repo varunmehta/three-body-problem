@@ -1,0 +1,13 @@
+#!/bin/bash
+set -e
+
+psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" --dbname "$POSTGRES_DB" <<-EOSQL
+    CREATE USER sonar WITH ENCRYPTED PASSWORD 'sonar';
+    CREATE DATABASE sonardb;
+    GRANT ALL PRIVILEGES ON DATABASE sonardb TO sonar;
+
+    CREATE USER pact WITH ENCRYPTED PASSWORD 'pact';
+    CREATE DATABASE pactdb;
+    GRANT ALL PRIVILEGES ON DATABASE pactdb TO pact;
+
+EOSQL

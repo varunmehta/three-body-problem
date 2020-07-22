@@ -2,68 +2,86 @@
 version: '3.1'
 
 services:
+  # This is not for the applications, user by sonarqube & pact
+  postgres_db:
+    image: postgres:10.11
+    container_name: postgres_db
+    restart: unless-stopped
+    networks:
+      - pipeline
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+      - postgresql:/var/lib/postgresql
+      - postgresql-data:/var/lib/postgresql/data
+      - ./dkr/init-user-db.sh:/docker-entrypoint-initdb.d/init-user-db.sh
+
   sonar:
     image: sonarqube
     command: -Dsonar.ce.javaOpts=-Xmx1192m -Dsonar.web.javaOpts=-Xmx1192m
     container_name: sonarqube
     restart: unless-stopped
     networks:
-      - cicd
+      - pipeline
     depends_on:
-      - sonarqube_db
+      - postgres_db
     ports:
       - "9000:9000"
     environment:
       - sonar.jdbc.username=sonar
       - sonar.jdbc.password=sonar
-      - sonar.jdbc.url=jdbc:postgresql://sonarqube_db:5432/sonar
+      - sonar.jdbc.url=jdbc:postgresql://postgres_db:5432/sonardb
     volumes:
-      - sonarqube_conf:/opt/sonarqube/conf
-      - sonarqube_data:/opt/sonarqube/data
-      - sonarqube_extensions:/opt/sonarqube/extensions
-      - sonarqube_bundled-plugins:/opt/sonarqube/lib/bundled-plugins
+      - sonarqube-conf:/opt/sonarqube/conf
+      - sonarqube-data:/opt/sonarqube/data
+      - sonarqube-extensions:/opt/sonarqube/extensions
+      - sonarqube-bundled-plugins:/opt/sonarqube/lib/bundled-plugins
     ulimits:
       nofile:
          soft: 65536
          hard: 65536
 
-  # This is not for the applications, used only sonarqube
-  sonarqube_db:
-    image: postgres:10.11
-    container_name: sonarqube_db
-    networks:
-      - cicd
-    environment:
-      - POSTGRES_USER=sonar
-      - POSTGRES_PASSWORD=sonar
-    volumes:
-      - postgresql:/var/lib/postgresql
-      - postgresql_data:/var/lib/postgresql/data
-
   jenkins:
     image: jenkinsci/blueocean
-    user: root
+    # user: root
+    restart: unless-stopped
     networks:
-      - cicd
+      - pipeline
     ports:
       - "8080:8080"
-      - "8443:8443"
-      - "50000:50000"
     volumes:
-      - jenkins_data:/var/jenkins_home
-      - jenkins_home:/home
+      - jenkins-data:/var/jenkins_home
+      - jenkins-home:/home
       - /var/run/docker.sock:/var/run/docker.sock
 
+  pact-broker:
+    image: pactfoundation/pact-broker
+    restart: unless-stopped
+    networks:
+      - pipeline
+    ports:
+      - "9292:9292"
+    depends_on:
+      - postgres_db
+    environment:
+      PACT_BROKER_PORT: "9292"
+      PACT_BROKER_DATABASE_URL: "postgres://pact:pact@postgres_db:5432/pactdb"
+      PACT_BROKER_LOG_LEVEL: INFO
+      PACT_BROKER_SQL_LOG_LEVEL: DEBUG
+
 networks:
-  cicd:
+  pipeline:
     driver: bridge
 
 volumes:
-  jenkins_data:
-  jenkins_home:
-  sonarqube_conf:
-  sonarqube_data:
-  sonarqube_extensions:
-  sonarqube_bundled-plugins:
+  jenkins-data:
+  jenkins-home:
+  sonarqube-conf:
+  sonarqube-data:
+  sonarqube-extensions:
+  sonarqube-bundled-plugins:
   postgresql:
-  postgresql_data:
+  postgresql-data:

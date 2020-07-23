@@ -44,10 +44,9 @@ services:
          soft: 65536
          hard: 65536
 
-
-  dind:
+  # this is annoying docker dind should be called as `docker`
+  docker:
     image: docker:dind
-    user: root
     networks:
       - pipeline
     ports:
@@ -61,21 +60,20 @@ services:
 
   jenkins:
     image: jenkinsci/blueocean
-    # user: root
     restart: unless-stopped
     networks:
       - pipeline
     ports:
       - "8080:8080"
+      - "50000:50000"
     depends_on:
-      - dind
+      - docker
     environment:
-      - DOCKER_HOST=tcp://dind:2376
+      - DOCKER_HOST=tcp://docker:2376
       - DOCKER_CERT_PATH=/certs/client
       - DOCKER_TLS_VERIFY=1
     volumes:
       - jenkins-data:/var/jenkins_home
-      - jenkins-home:/home
       - jenkins-docker-certs:/certs/client:ro
 
   pact-broker:

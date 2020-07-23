@@ -16,7 +16,7 @@ pipeline {
             sh './trisolar/gradlew -b ./trisolar/build.gradle clean build sonarqube \
                           -Dsonar.host.url=http://sonarqube:9000 \
                           -Dsonar.login=39bd6cb5337b9f6abd829ef57171aedbb39a2f77 \
-                          -Dsonar.projectKey=TRISOLAR'
+                          -Dsonar.projectKey=TRISOLAR --info'
           } finally {
             junit '**/build/test-results/test/*.xml'
           }

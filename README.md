@@ -25,3 +25,7 @@ The [jenkins documentation](https://www.jenkins.io/doc/book/installing/#download
  * Configure Jenkinsfile and run with code build.
 
 > Don't use https, you'll run into SSL certificate issues. Just use git:ssh connection.
+
+### testcontainers
+
+Testcontainers, allow you to use docker running integration test with real dockerized DBs. Using localstack allows you to emulate the AWS environment too. Since we are running jenkins in a dockerized environment, we are very prone to docker wormholes. Make sure you use docker:dind to get it working.

@@ -1,10 +1,10 @@
-# The Tri-Solar Service
+# The Trisolar Service
 
 A simple spring-boot based gradle project. Check `build.gradle` for dependencies.
 
 ## Dependencies
 
- Docker-Desktop. You should have docker running on your local development environment to run unit and integration tests.  
+[Docker desktop](https://www.docker.com/products/docker-desktop). You should have docker running on your local development environment to run unit and integration tests.  
 
 ### `testcontainers`
 

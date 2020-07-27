@@ -7,7 +7,7 @@ Every application always suffers from a 3 body problem.
 
 I've tried to build a simple app to demonstrate how they can work in harmony with a predictable orbit.
 
-> I was reading the [The Three Body Problem](https://en.wikipedia.org/wiki/The_Three-Body_Problem_(novel)), and trying to work on this sample app, when the two paradigms felt similar to each other. Also naming a project is always [painful](https://blog.codinghorror.com/whats-in-a-project-name/)!
+> I was reading the [The Three Body Problem](https://en.wikipedia.org/wiki/The_Three-Body_Problem_(novel)), and trying to work on this sample app, when the two paradigms felt similar to each other. Also naming a project is always [painful](https://blog.codinghorror.com/whats-in-a-project-name/)! The *people* in the three body universe are called as **Trisolarans**.
 
 ## `trisolar-universe.yml`
 

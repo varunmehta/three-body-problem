@@ -7,7 +7,7 @@ pipeline {
       steps {
         script {
           try {
-            sh './trisolar/gradlew -b ./trisolar/build.gradle clean test --info'
+            sh './service/gradlew -b ./service/build.gradle clean test --info'
           } finally {
             junit '**/build/test-results/test/*.xml'
           }
@@ -18,7 +18,7 @@ pipeline {
     // stage('Publish to SonarQube') {
     //   steps {
     //     script {
-    //       sh './trisolar/gradlew -b ./trisolar/build.gradle sonarqube \
+    //       sh './service/gradlew -b ./service/build.gradle sonarqube \
     //                     -Dsonar.host.url=http://sonarqube:9000 \
     //                     -Dsonar.login=39bd6cb5337b9f6abd829ef57171aedbb39a2f77 \
     //                     -Dsonar.projectKey=TRISOLAR --info'
@@ -29,7 +29,7 @@ pipeline {
     stage('Dockerize') {
       steps {
         script {
-          sh './trisolar/gradlew docker'
+          sh './service/gradlew -b ./service/build.gradle docker'
         }
       }
     }

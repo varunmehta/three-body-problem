@@ -7,7 +7,7 @@ pipeline {
       steps {
         script {
           try {
-            sh './service/gradlew -b ./service/build.gradle clean test --info'
+            sh './service/gradlew -b ./service/build.gradle clean test'
           } finally {
             junit '**/build/test-results/test/*.xml'
           }
@@ -33,15 +33,16 @@ pipeline {
           args '-p 3000:3000'
         }
       }
+      environment {
+        HOME = "./ui"
+      }
       stages {
         stage ('Build') {
           steps {
             sh 'npm install'
           }
-        }
-        stage ('Test') {
           steps {
-            sh './ui/ng build --prod'
+            sh 'ng build --prod'
           }
         }
       }

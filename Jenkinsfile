@@ -36,12 +36,12 @@ pipeline {
       stages {
         stage ('Build') {
           steps {
-            sh 'npm install'
+            sh './ui/npm install'
           }
         }
         stage ('Test') {
           steps {
-            sh 'ng build --prod'
+            sh './ui/ng build --prod'
           }
         }
       }

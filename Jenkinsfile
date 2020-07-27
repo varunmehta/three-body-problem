@@ -36,7 +36,7 @@ pipeline {
       stages {
         stage ('Build') {
           steps {
-            sh './ui/npm install'
+            sh 'npm install'
           }
         }
         stage ('Test') {

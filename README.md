@@ -36,8 +36,7 @@ The [jenkins documentation](https://www.jenkins.io/doc/book/installing/#download
  * Once Jenkins is installed, switch over to Blue Ocean view
  * Create a new Pipeline.
  * Select git
- > Don't use github by default, it uses https, you'll run into SSL certificate issues. Just use git:ssh connection.
-
+  > Don't use github by default, it uses https, you'll run into SSL certificate issues. Just use git:ssh connection.
  * Provide `ssh` url for git: git@github.com:varunmehta/three-body-problem.git
  * Jenkins will generate and provide a `ssh-rsa` key for your git server.
  * Add [key to your github account](https://docs.github.com/en/github/authenticating-to-github/connecting-to-github-with-ssh) for the pipeline to use.

@@ -31,6 +31,7 @@ pipeline {
         docker {
           image 'node:6-alpine'
           args '-p 3000:3000'
+          args '-v .:${PWD}./ui'
           reuseNode true
         }
       }
@@ -41,8 +42,8 @@ pipeline {
         stage ('Install') {
           steps {
             sh 'cd ./ui'
-            sh 'echo pwd'
-            sh 'npm install'
+            sh 'pwd'
+            sh './ui/npm install'
           }
         }
         stage ('Build') {

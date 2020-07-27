@@ -31,16 +31,19 @@ pipeline {
         docker {
           image 'node:6-alpine'
           args '-p 3000:3000'
+          reuseNode true
         }
       }
       environment {
         HOME = "./ui"
       }
       stages {
-        stage ('Build') {
+        stage ('Install') {
           steps {
             sh 'npm install'
           }
+        }
+        stage ('Build')
           steps {
             sh 'ng build --prod'
           }

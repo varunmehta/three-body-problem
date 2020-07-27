@@ -32,7 +32,6 @@ pipeline {
           image 'node:6-alpine'
           args '-p 3000:3000'
           reuseNode true
-
         }
       }
       environment {
@@ -41,13 +40,14 @@ pipeline {
       stages {
         stage ('Install') {
           steps {
-            sh 'cd ui'
+            sh 'cd ./ui'
+            sh 'echo pwd'
             sh 'npm install'
           }
         }
         stage ('Build') {
           steps {
-            sh 'ng build --prod'
+            sh 'npm run-script build --prod'
           }
         }
       }

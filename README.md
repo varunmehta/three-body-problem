@@ -9,7 +9,17 @@ I've tried to build a simple app to demonstrate how they can work in harmony wit
 
 > I was reading the [The Three Body Problem](https://en.wikipedia.org/wiki/The_Three-Body_Problem_(novel)), and trying to work on this sample app, when the two paradigms felt similar to each other. Also naming a project is always [painful](https://blog.codinghorror.com/whats-in-a-project-name/)! The *people* in the three body universe are called as **Trisolarans**.
 
-## `trisolar-universe.yml`
+## Service
+
+`spring-boot` based backend service, exposing a REST API. Check the [documentation under the service](service/README.md) to know how to set it up locally.
+
+## Ui
+
+`angular` UI app. Check the [documentation under the ui](ui/README.md) to know how to set it up locally.
+
+
+
+## Local DevOps Pipeline -`trisolar-universe.yml`
 
 In order to run a pipeline we need a couple of services. We leverage here on `docker-compose` file to create a small local network. The services currently in use are;
 

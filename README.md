@@ -13,19 +13,47 @@ I've tried to build a simple app to demonstrate how they can work in harmony wit
 
 In order to run a pipeline we need a couple of services. We leverage here on `docker-compose` file to create a small local network. The services currently in use are;
 
- * **SonarQube**: Code Quality
  * **Jenkins**: CI/CD
- * **PostgreSQL**: For SonarQube
+ * **SonarQube**: Code Quality
+ * **PostgreSQL**: For SonarQube & Pact Broker
+ * **Pact Broker**: Pact Broker to capture pact changes.
+
+
+### `/etc/hosts`
+Since you are running this local, if everything is on localhost, the services don't like it. Add some entries to your `/etc/hosts` for easier management
+
+```
+127.0.0.1       jenkins
+127.0.0.1       sonarqube
+127.0.0.1       pact-broker
+```
+Access each of the services on their respective ports with the above mentioned names. You can add your own special subdomains or extensions you like.
+
+### Jenkins
 
 The [jenkins documentation](https://www.jenkins.io/doc/book/installing/#downloading-and-running-jenkins-in-docker) on how to setup jenkins in docker is well documented. The steps I've followed are documented below in broad strokes. Please refer back to the original documentation for updated changes.
 
- * Add Jenkins repo with basic plugins
-   - Make sure git and sonarqube plugins are installed.
- * Setup [SSH key](https://docs.github.com/en/github/authenticating-to-github/connecting-to-github-with-ssh) for your git account and use that.
- * Configure Jenkinsfile and run with code build.
+ * Once Jenkins is installed, switch over to Blue Ocean view
+ * Create a new Pipeline.
+ * Select git
+ > Don't use github by default, it uses https, you'll run into SSL certificate issues. Just use git:ssh connection.
 
-> Don't use https, you'll run into SSL certificate issues. Just use git:ssh connection.
+ * Provide `ssh` url for git: git@github.com:varunmehta/three-body-problem.git
+ * Jenkins will generate and provide a `ssh-rsa` key for your git server.
+ * Add [key to your github account](https://docs.github.com/en/github/authenticating-to-github/connecting-to-github-with-ssh) for the pipeline to use.
+ * Create pipeline.
+ * Jenkins will pickup the `Jenkinsfile` and start building the code.
 
-### testcontainers
+### SonarQube
 
-Testcontainers, allow you to use docker running integration test with real dockerized DBs. Using localstack allows you to emulate the AWS environment too. Since we are running jenkins in a dockerized environment, we are very prone to docker wormholes. Make sure you use docker:dind to get it working.
+Follow instructions to setup SonarQube, and modify the Jenkinsfile to have the proper key from SonarQube.
+
+```
+  sh './service/gradlew -b ./service/build.gradle sonarqube \
+               -Dsonar.host.url=http://sonarqube:9000 \
+               -Dsonar.login=<insert_key_here> \
+               -Dsonar.projectKey=TRISOLAR --info'
+```
+
+### Pact-Broker
+ pact-broker is happy to be started on its local port.

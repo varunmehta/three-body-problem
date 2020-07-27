@@ -31,7 +31,9 @@ pipeline {
         docker {
           image 'node:6-alpine'
           args '-p 3000:3000'
+          args '-v '
           reuseNode true
+
         }
       }
       environment {
@@ -40,6 +42,7 @@ pipeline {
       stages {
         stage ('Install') {
           steps {
+            sh 'cd ui'
             sh 'npm install'
           }
         }

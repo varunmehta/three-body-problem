@@ -29,16 +29,13 @@ pipeline {
     stage('Build & Test UI') {
       agent {
         docker {
-          image 'node:6-alpine'
+          image 'node:current-alpine'
           args '-p 3000:3000'
           reuseNode true
         }
       }
-      environment {
-        HOME = "./ui"
-      }
       stages {
-        stage ('Install') {
+        stage ('Package') {
           steps {
             dir ('ui') {
               sh 'npm install'

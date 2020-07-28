@@ -15,16 +15,16 @@ pipeline {
       }
     }
 
-    // stage('Publish to SonarQube') {
-    //   steps {
-    //     script {
-    //       sh './service/gradlew -b ./service/build.gradle sonarqube \
-    //                     -Dsonar.host.url=http://sonarqube:9000 \
-    //                     -Dsonar.login=39bd6cb5337b9f6abd829ef57171aedbb39a2f77 \
-    //                     -Dsonar.projectKey=TRISOLAR --info'
-    //     }
-    //   }
-    // }
+    stage('Publish to SonarQube') {
+      steps {
+        script {
+          sh './service/gradlew -b ./service/build.gradle sonarqube \
+                        -Dsonar.host.url=http://sonarqube:9000 \
+                        -Dsonar.login=194aaaef3027e61e19752e883e3f8201b2c0d418 \
+                        -Dsonar.projectKey=trisolar'
+        }
+      }
+    }
 
     stage('Build & Test UI') {
       agent {

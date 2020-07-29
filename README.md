@@ -73,8 +73,9 @@ Follow instructions to setup SonarQube, and modify the Jenkinsfile to have the p
 
 Add support for;
 
- [] aws-parameter-store
- [] s3
- [] localstack with DynamoDB
- [] secrets-manager
- [] sauce-labs with container on this system with automation  
+ * [ ] AWS-parameter-store
+ * [ ] S3
+ * [ ] DynamoDB
+ * [ ] Secrets-Manager
+ * [ ] All the above test using LocalStack
+ * [ ] sauce-labs with container on this system with automation  

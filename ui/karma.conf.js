@@ -1,10 +1,10 @@
 // Karma configuration file, see link for more information
 // https://karma-runner.github.io/1.0/config/configuration-file.html
-
+const path = require('path');
 module.exports = function (config) {
   config.set({
     basePath: '',
-    frameworks: ['jasmine', '@angular-devkit/build-angular'],
+    frameworks: ['jasmine', '@angular-devkit/build-angular', 'pact'],
     plugins: [
       require('karma-jasmine'),
       require('@pact-foundation/karma-pact'),
@@ -16,7 +16,7 @@ module.exports = function (config) {
     client: {
       clearContext: false, // leave Jasmine Spec Runner output visible in browser
       jasmine: {
-        timeoutInterval: 40000
+        timeoutInterval: 400000
       }
     },
     coverageIstanbulReporter: {
@@ -32,17 +32,21 @@ module.exports = function (config) {
     browsers: ['Chrome'],
     singleRun: true,
     restartOnFileChange: true,
+    browserNoActivityTimeout: 400000,
     pact: [
       {
-        cors: true,
-        spec: 3,
+        consumer: "ui",
+        provider: "CustomerService",
+        spec: 2,
+        host: '127.0.0.1',
         port: 1234,
         log: path.resolve(process.cwd(), 'logs', 'mockserver-integration.log'),
-        dir: path.resolve(process.cwd(), '../../pacts')
+        dir: path.resolve(process.cwd(), '../pacts'),
+        cors: true
       }
     ],
     proxies: {
-      '/api': 'http://localhost:1234/api'
+      '/api': 'http://127.0.0.1:1234/api'
     }
   });
 };

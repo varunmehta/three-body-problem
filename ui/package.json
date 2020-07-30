@@ -29,6 +29,8 @@
     "@angular/cli": "~10.0.4",
     "@angular/compiler-cli": "~10.0.5",
     "@pact-foundation/karma-pact": "^2.3.1",
+    "@pact-foundation/pact-node": "^10.9.7",
+    "@pact-foundation/pact-web": "^9.11.0",
     "@types/jasmine": "~3.5.0",
     "@types/jasminewd2": "~2.0.3",
     "@types/node": "^12.11.1",

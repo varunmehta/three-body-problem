@@ -11,14 +11,15 @@ describe('CustomerServicePact', () => {
   // Setup Pact mock server for this service
   beforeAll(async () => {
 
-    provider = await new PactWeb({
-      consumer: 'ui-karma',
-      provider: 'customerservice',
-      port: 1234
+    provider = new PactWeb({
+      port: 1234,
+      host: '127.0.0.1',
+      logLevel: 'debug',
+      spec: 2
     });
 
     // required for slower CI environments
-    await new Promise(resolve => setTimeout(resolve, 1000));
+    await new Promise(resolve => setTimeout(resolve, 200000));
 
     // Required if run with `singleRun: false`
     await provider.removeInteractions();

@@ -8,7 +8,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.util.Optional;
 
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -43,7 +43,7 @@ public class CustomerControllerTest {
 		when(service.getCustomerById(id)).thenReturn(optionalCustomer);
 
 		this.mvc.perform(get("/customers/" + id).contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk())
-				.andExpect(jsonPath("$.firstname", is(customer.getFirstname())));
+				.andExpect(jsonPath("$.firstName", is(customer.getFirstName())));
 	}
 
 	@Test

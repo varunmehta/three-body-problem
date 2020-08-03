@@ -30,6 +30,12 @@ module.exports = function (config) {
     logLevel: config.LOG_INFO,
     autoWatch: true,
     browsers: ['Chrome'],
+    customLaunchers: {
+      ChromeHeadlessCI: {
+        base: 'ChromeHeadless',
+        flags: ['--no-sandbox']
+      }
+    },
     singleRun: true,
     restartOnFileChange: true,
     browserNoActivityTimeout: 400000,
@@ -46,7 +52,7 @@ module.exports = function (config) {
       }
     ],
     proxies: {
-      '/api': 'http://127.0.0.1:1234/api'
+      '/customers': 'http://127.0.0.1:1234/customers'
     }
   });
 };

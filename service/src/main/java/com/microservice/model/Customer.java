@@ -23,9 +23,9 @@ public class Customer {
 	private int id;
 
 	@NonNull
-	private String firstname;
+	private String firstName;
 	@NonNull
-	private String lastname;
+	private String lastName;
 	@NonNull
 	private String email;
 

@@ -1,7 +1,48 @@
 pipeline {
   agent any
 
+
   stages {
+
+    stage('Build & Test UI') {
+
+      stages {
+
+        stage ('Package') {
+          steps {
+            dir ('ui') {
+              withNPM() {
+              /* sh 'ls -l /npm'
+              sh 'whoami'
+              sh 'npm config -g set cafile /npm/nscacert_combined.pem' */
+              sh 'npm install'
+              sh 'npm run-script build --prod'
+            }
+            }
+          }
+        }
+
+        stage('Run UI Tests') {
+          steps {
+            dir ('ui') {
+              sh 'npm run test -- --no-watch --no-progress --browsers=ChromeHeadlessCI'
+              sh 'npm run e2e -- --protractor-config=e2e/protractor-ci.conf.js'
+            }
+          }
+        }
+
+        stage('Publish Pacts') {
+          steps {
+            dir ('ui') {
+              sh '''pact-broker publish ./pacts
+              --consumer-app-version=${GIT_COMMIT}
+              --broker-base-url=pact-broker
+              --tag=${BRANCH_NAME}'''
+            }
+          }
+        }
+      }
+    }
 
     stage('Build & Test Service') {
       steps {
@@ -10,37 +51,6 @@ pipeline {
             sh './service/gradlew -b ./service/build.gradle clean test'
           } finally {
             junit '**/build/test-results/test/*.xml'
-          }
-        }
-      }
-    }
-
-    stage('Publish to SonarQube') {
-      steps {
-        script {
-          sh './service/gradlew -b ./service/build.gradle sonarqube \
-                        -Dsonar.host.url=http://sonarqube:9000 \
-                        -Dsonar.login=194aaaef3027e61e19752e883e3f8201b2c0d418 \
-                        -Dsonar.projectKey=trisolar'
-        }
-      }
-    }
-
-    stage('Build & Test UI') {
-      agent {
-        docker {
-          image 'node:current-alpine'
-          args '-p 3000:3000'
-          reuseNode true
-        }
-      }
-      stages {
-        stage ('Package') {
-          steps {
-            dir ('ui') {
-              sh 'npm install'
-              sh 'npm run-script build --prod'
-            }
           }
         }
       }

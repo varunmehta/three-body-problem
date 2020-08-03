@@ -28,7 +28,7 @@ public class CustomerController {
 		return new ResponseEntity<List<Customer>>(customerService.getCustomers(), HttpStatus.OK);
 	}
 
-	@GetMapping(value = "/customers/{id}")
+	@GetMapping(value = "/customers/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Customer> getCustomer(@PathVariable int id) {
 		Optional<Customer> customer = customerService.getCustomerById(id);
 
@@ -41,7 +41,7 @@ public class CustomerController {
 
 	@PostMapping(value = "/customers")
 	public ResponseEntity<Customer> createCustomer(@RequestBody Customer customer) {
-		return new ResponseEntity<Customer>(customerService.upsertCustomer(customer), HttpStatus.OK);
+		return new ResponseEntity<Customer>(customerService.upsertCustomer(customer), HttpStatus.CREATED);
 	}
 
 	/**

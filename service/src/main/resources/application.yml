@@ -2,6 +2,10 @@ spring:
   main:
     banner-mode: off
   datasource:
+    # driver-class-name: org.h2.Driver
+    url: jdbc:postgresql://localhost:5432/postgres
+    username: postgres
+    password: postgres
     hikari:
       minimum-idle: 1
       maximum-pool-size: 10
@@ -10,3 +14,7 @@ spring:
 management:
   server:
     port: 8081
+
+
+server:
+  port: 8082

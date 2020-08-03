@@ -48,6 +48,9 @@ dependencies {
 	testImplementation 'org.testcontainers:postgresql'
 	testImplementation 'org.testcontainers:localstack'
 	testImplementation 'org.testcontainers:junit-jupiter'
+
+	testCompile 'au.com.dius:pact-jvm-provider-spring_2.12:3.5.11'
+	testCompile 'au.com.dius:pact-jvm-provider-spring_2.12:3.6.9'
 }
 
 docker {
@@ -77,4 +80,5 @@ test {
 	useJUnitPlatform()
     systemProperty 'spring.profiles.active', 'test'
     finalizedBy jacocoTestReport
+	systemProperties['pact.verifier.publishResults'] = "true"
 }

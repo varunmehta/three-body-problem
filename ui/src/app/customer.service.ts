@@ -9,7 +9,7 @@ import { map } from 'rxjs/operators';
 })
 export class CustomerService {
 
-  private BASE_URL = '/api/customers';
+  private BASE_URL = '/customers';
 
   constructor(private httpClient: HttpClient) {
   }

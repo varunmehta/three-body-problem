@@ -19,30 +19,30 @@ services:
       - postgresql-data:/var/lib/postgresql/data
       - ./dkr/init-user-db.sh:/docker-entrypoint-initdb.d/init-user-db.sh
 
-  sonar:
-    image: sonarqube
-    command: -Dsonar.ce.javaOpts=-Xmx1192m -Dsonar.web.javaOpts=-Xmx1192m
-    container_name: sonarqube
-    restart: unless-stopped
-    networks:
-      - pipeline
-    depends_on:
-      - postgres_db
-    ports:
-      - "9000:9000"
-    environment:
-      - sonar.jdbc.username=sonar
-      - sonar.jdbc.password=sonar
-      - sonar.jdbc.url=jdbc:postgresql://postgres_db:5432/sonardb
-    volumes:
-      - sonarqube-conf:/opt/sonarqube/conf
-      - sonarqube-data:/opt/sonarqube/data
-      - sonarqube-extensions:/opt/sonarqube/extensions
-      - sonarqube-bundled-plugins:/opt/sonarqube/lib/bundled-plugins
-    ulimits:
-      nofile:
-         soft: 65536
-         hard: 65536
+#  sonar:
+#    image: sonarqube
+#    command: -Dsonar.ce.javaOpts=-Xmx1192m -Dsonar.web.javaOpts=-Xmx1192m
+#    container_name: sonarqube
+#    restart: unless-stopped
+#    networks:
+#      - pipeline
+#    depends_on:
+#      - postgres_db
+#    ports:
+#      - "9000:9000"
+#    environment:
+#      - sonar.jdbc.username=sonar
+#      - sonar.jdbc.password=sonar
+#      - sonar.jdbc.url=jdbc:postgresql://postgres_db:5432/sonardb
+#    volumes:
+#      - sonarqube-conf:/opt/sonarqube/conf
+#      - sonarqube-data:/opt/sonarqube/data
+#      - sonarqube-extensions:/opt/sonarqube/extensions
+#      - sonarqube-bundled-plugins:/opt/sonarqube/lib/bundled-plugins
+#    ulimits:
+#      nofile:
+#         soft: 65536
+#         hard: 65536
 
   # this is annoying docker dind should be called as `docker`
   docker:
@@ -75,6 +75,8 @@ services:
     volumes:
       - jenkins-data:/var/jenkins_home
       - jenkins-docker-certs:/certs/client:ro
+      - ${PWD}:/local-repo
+      - /Users/dami.okuneye/.npm/:/certs/npm
 
   pact-broker:
     image: pactfoundation/pact-broker

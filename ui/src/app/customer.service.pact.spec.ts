@@ -52,6 +52,7 @@ describe('CustomerServicePact', () => {
     const customerId = 1;
 
     const expectedCustomer: Customer = {
+      id: 1,
       firstName: 'Jeff',
       lastName: 'Lyte',
       email: 'jeff_lyte@mail.com'
@@ -63,11 +64,14 @@ describe('CustomerServicePact', () => {
         uponReceiving: 'a request to GET a customer',
         withRequest: {
           method: 'GET',
-          path: `/api/customers/${customerId}`
+          path: `/customers/${customerId}`
         },
         willRespondWith: {
           status: 200,
-          body: Matchers.somethingLike(expectedCustomer)
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: Matchers.like(expectedCustomer)
         }
       });
     });
@@ -86,9 +90,11 @@ describe('CustomerServicePact', () => {
     const customerId = '0yswEm7ET4';
 
     const expectedCustomer: Customer = {
+      id: 13,
       firstName: 'Sonn',
       lastName: 'Onlie',
-      email: 'sonn_onlie@mail.com'
+      email: 'sonn_onlie@mail.com',
+      funkyId: '0yswEm7ET4'
     };
 
     beforeAll(async () => {
@@ -97,10 +103,13 @@ describe('CustomerServicePact', () => {
         uponReceiving: 'a request to GET a customer by funky id',
         withRequest: {
           method: 'GET',
-          path: `/api/customers/funky/${customerId}`
+          path: `/customers/funky/${customerId}`
         },
         willRespondWith: {
           status: 200,
+          headers: {
+            "Content-Type": "application/json",
+          },
           body: Matchers.somethingLike(expectedCustomer)
         }
       });
@@ -123,7 +132,7 @@ describe('CustomerServicePact', () => {
       email: 'ross_sam@mail.com'
     };
 
-    const createdCustomerId = 42;
+    const createdCustomerId = 100;
 
     beforeAll(async () => {
       await provider.addInteraction({
@@ -131,7 +140,7 @@ describe('CustomerServicePact', () => {
         uponReceiving: 'a request to POST a customer',
         withRequest: {
           method: 'POST',
-          path: '/api/customers',
+          path: '/customers',
           body: expectedCustomer,
           headers: {
             'Content-Type': 'application/json'
@@ -139,12 +148,12 @@ describe('CustomerServicePact', () => {
         },
         willRespondWith: {
           status: 201,
-          body: Matchers.somethingLike({
-            id: createdCustomerId
-          }),
           headers: {
             'Content-Type': 'application/json'
-          }
+          },
+          body: Matchers.somethingLike({
+            id: createdCustomerId
+          })
         }
       });
     });
@@ -161,6 +170,7 @@ describe('CustomerServicePact', () => {
   describe('update()', () => {
 
     const expectedCustomer: Customer = {
+      id: 42,
       firstName: 'Milli',
       lastName: 'Nesa',
       email: 'milli_nesa@mail.com'
@@ -172,12 +182,15 @@ describe('CustomerServicePact', () => {
         uponReceiving: 'a request to PUT a customer',
         withRequest: {
           method: 'PUT',
-          path: '/api/customers/42',
+          path: '/customers/42',
           headers: {'Content-Type': 'application/json'},
           body: Matchers.somethingLike(expectedCustomer)
         },
         willRespondWith: {
           status: 200,
+          headers: {
+            "Content-Type": "application/json",
+          },
           body: Matchers.somethingLike(expectedCustomer)
         }
       });

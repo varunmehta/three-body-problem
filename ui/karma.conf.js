@@ -13,6 +13,9 @@ module.exports = function (config) {
       require('karma-coverage-istanbul-reporter'),
       require('@angular-devkit/build-angular/plugins/karma')
     ],
+    files: [
+      "node_modules/@pact-foundation/pact-web/pact-web.js"
+    ],
     client: {
       clearContext: false, // leave Jasmine Spec Runner output visible in browser
       jasmine: {
@@ -45,7 +48,7 @@ module.exports = function (config) {
         provider: "CustomerService",
         spec: 2,
         host: '127.0.0.1',
-        port: 1234,
+        port: 3000,
         log: path.resolve(process.cwd(), 'logs', 'mockserver-integration.log'),
         dir: path.resolve(process.cwd(), '../pacts'),
         cors: true

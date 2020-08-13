@@ -76,7 +76,7 @@ services:
       - jenkins-data:/var/jenkins_home
       - jenkins-docker-certs:/certs/client:ro
       - ${PWD}:/local-repo
-      - /Users/dami.okuneye/.npm/:/certs/npm
+      # - /Users/dami.okuneye/.npm/:/certs/npm
 
   pact-broker:
     image: pactfoundation/pact-broker
@@ -101,9 +101,9 @@ volumes:
   jenkins-data:
   jenkins-home:
   jenkins-docker-certs:
-  sonarqube-conf:
-  sonarqube-data:
-  sonarqube-extensions:
-  sonarqube-bundled-plugins:
+  # sonarqube-conf:
+  # sonarqube-data:
+  # sonarqube-extensions:
+  # sonarqube-bundled-plugins:
   postgresql:
   postgresql-data:

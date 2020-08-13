@@ -73,9 +73,10 @@ Follow instructions to setup SonarQube, and modify the Jenkinsfile to have the p
 
 Add support for;
 
- * [ ] AWS-parameter-store
- * [ ] S3
- * [ ] DynamoDB
- * [ ] Secrets-Manager
+ * [ ] AWS-parameter-store - Used with PostgreSQL
+ * [ ] S3 - I want to upload image, request url from s3, get url, upload image. (all be in UI). After upload successful, make backend POST call with final url for display.
+ * [ ] DynamoDB --> save s3 url info to DynamoDB.
+ * [ ] Secrets-Manager - Used with PostgreSQL
  * [ ] All the above test using LocalStack
- * [ ] sauce-labs with container on this system with automation  
+ * [ ] sauce-labs with container on this system with automation
+ * [ ] Add tracing examples

@@ -3,6 +3,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { CustomerService } from './customer.service';
 import { Customer } from './customer';
 import { Matchers, PactWeb } from '@pact-foundation/pact-web';
+import { Pact } from '@pact-foundation/pact';
 
 describe('CustomerServicePact', () => {
 
@@ -11,18 +12,14 @@ describe('CustomerServicePact', () => {
   // Setup Pact mock server for this service
   beforeAll(async () => {
 
-    provider = new PactWeb({
-      port: 1234,
-      host: '127.0.0.1',
-      logLevel: 'debug',
-      spec: 2
-    });
-
+    provider = new PactWeb();
     // required for slower CI environments
     await new Promise(resolve => setTimeout(resolve, 200000));
 
     // Required if run with `singleRun: false`
-    await provider.removeInteractions();
+    // await provider.removeInteractions();
+
+    await provider.setup()
   });
 
   // Configure Angular Testbed for this service

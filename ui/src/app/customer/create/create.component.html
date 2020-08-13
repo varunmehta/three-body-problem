@@ -1,0 +1,23 @@
+<div>
+  <h1>New Product</h1>
+
+  <form name="customerForm"  novalidate>
+    <div class="form-group">
+      <label>First Name</label>
+      <input type="text" formControlName="firstname" class="form-control" maxlength="20">
+    </div>
+    <div class="form-group">
+      <label>Last Name</label>
+      <input type="text" formControlName="lastname" class="form-control" maxlength="20">
+    </div>
+    <div class="form-group">
+      <label>Email</label>
+      <input type="text" formControlName="email" class="form-control" maxlength="50">
+    </div>
+    <div class="form-group">
+      <label>Funky Id</label>
+      <input type="text" formControlName="funkyId" class="form-control" maxlength="65">
+    </div>
+    <button (click)="submitForm()" type="submit">Create</button>
+  </form>
+</div>

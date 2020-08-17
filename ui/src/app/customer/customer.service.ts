@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { CommonModule } from '@angular/common';
 
 import { Observable } from 'rxjs'
 import { throwError }  from 'rxjs';

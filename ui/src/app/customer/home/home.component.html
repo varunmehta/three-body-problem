@@ -14,12 +14,12 @@
     </thead>
     <tbody>
       <tr *ngFor="let customer of customers">
-        <td>{{product.id}}</td>
-        <td>{{customer.firstname}} {{customer.lastname}}</td>
-        <td>{{customer.email}}</td>
-        <td>{{customer.funkyId}}</td>
-        <td>{{customer.createdOn}}</td>
-        <td>{{customer.updatedOn}}</td>
+        <td>{{ customer.id  }}</td>
+        <td>{{ customer.firstname }} {{ customer.lastname }}</td>
+        <td>{{ customer.email }}</td>
+        <td>{{ customer.funkyId }}</td>
+        <td>{{ customer.createdOn }}</td>
+        <td>{{ customer.updatedOn }}</td>
         <td>
           <button type="button" routerLink="['/customer/update/'], customer.id]">Update</button>
         </td>

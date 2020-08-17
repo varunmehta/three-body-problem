@@ -8,10 +8,11 @@ spring:
     hikari:
       minimum-idle: 1
       maximum-pool-size: 10
+  flyway:
+    # the /dev/db/migration can also be defined in application-dev.yml
+    locations: classpath:/db/migration,classpath:/dev/db/migration
 
 # All actuator/micrometer related stuff here.
 management:
   server:
-    port: 8081
-server:
-  port: 8082
+    port: 8181

@@ -23,6 +23,11 @@ export class CustomerService {
 
   constructor(private httpClient: HttpClient) { }
 
+  createClient = function(localBaseUrl) {
+    this.baseUrl = localBaseUrl
+    return this
+  }
+
   create(customer): Observable<Customer> {
     return this.httpClient.post<Customer>(`${this.baseUrl}`, JSON.stringify(customer), this.httpOptions).pipe(catchError(this.errorHandler))
   }

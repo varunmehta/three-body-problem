@@ -1,6 +1,7 @@
 // Karma configuration file, see link for more information
 // https://karma-runner.github.io/1.0/config/configuration-file.html
 const path = require('path');
+//process.env.CHROME_BIN = require("puppeteer").executablePath()
 module.exports = function (config) {
   config.set({
     basePath: '',
@@ -19,7 +20,7 @@ module.exports = function (config) {
     client: {
       clearContext: false, // leave Jasmine Spec Runner output visible in browser
       jasmine: {
-        timeoutInterval: 400000
+        timeoutInterval: 800000
       }
     },
     coverageIstanbulReporter: {
@@ -30,7 +31,7 @@ module.exports = function (config) {
     reporters: ['progress', 'kjhtml'],
     port: 9876,
     colors: true,
-    logLevel: config.LOG_INFO,
+    logLevel: config.LOG_DEBUG,
     autoWatch: true,
     browsers: ['Chrome'],
     customLaunchers: {
@@ -41,8 +42,8 @@ module.exports = function (config) {
     },
     singleRun: true,
     restartOnFileChange: true,
-    browserNoActivityTimeout: 400000,
-    pact: [
+    browserNoActivityTimeout: 1000000,
+    /*pact: [
       {
         consumer: "ui",
         provider: "CustomerService",
@@ -51,11 +52,12 @@ module.exports = function (config) {
         port: 3000,
         log: path.resolve(process.cwd(), 'logs', 'mockserver-integration.log'),
         dir: path.resolve(process.cwd(), '../pacts'),
-        cors: true
+        cors: true,
+        logLevel: 'debug'
       }
-    ],
+    ],*/
     proxies: {
-      '/customers': 'http://127.0.0.1:1234/customers'
+      '/customers': 'http://127.0.0.1:3000/customers'
     }
   });
 };

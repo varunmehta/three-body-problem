@@ -1,7 +1,7 @@
 <div>
   <h1>New Customer</h1>
 
-  <form name="customerForm"  novalidate>
+  <form [formGroup]="customerForm" novalidate>
     <div class="form-group">
       <label>First Name</label>
       <input type="text" formControlName="firstname" class="form-control" maxlength="20">

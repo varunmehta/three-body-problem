@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CustomerService } from '../customer.service';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
 import { Router } from '@angular/router';
 
 @Component({
@@ -8,23 +8,19 @@ import { Router } from '@angular/router';
   templateUrl: './create.component.html',
   styleUrls: ['./create.component.scss']
 })
-export class CreateComponent implements OnInit {
-  customerForm: FormGroup;
+export class CreateComponent {
+  customerForm = new FormGroup({
+    firstname: new FormControl(''),
+    lastname: new FormControl(''),
+    email: new FormControl(''),
+    funkyId: new FormControl(''),
+  });
 
   constructor(
     public fb: FormBuilder,
     private router: Router,
     public customerService: CustomerService
   ) { }
-
-  ngOnInit(): void {
-    this.customerForm = this.fb.group ({
-      firstname: [''],
-      lastname: [''],
-      email: [''],
-      funkyId: ['']
-    })
-  }
 
   submitForm() {
     this.customerService.create(this.customerForm.value).subscribe(res => {

@@ -13,7 +13,7 @@ import { Customer } from './customer';
 })
 export class CustomerService {
 
-  private baseUrl = 'http://localhost:8080/customers'
+  private baseUrl = '/api/customers';
 
   httpOptions = {
     headers: new HttpHeaders({
@@ -21,7 +21,8 @@ export class CustomerService {
     })
   }
 
-  constructor(private httpClient: HttpClient) { }
+  constructor(private httpClient: HttpClient) {
+  }
 
   createClient = function(localBaseUrl) {
     this.baseUrl = localBaseUrl
@@ -29,19 +30,19 @@ export class CustomerService {
   }
 
   create(customer): Observable<Customer> {
-    return this.httpClient.post<Customer>(`${this.baseUrl}`, JSON.stringify(customer), this.httpOptions).pipe(catchError(this.errorHandler))
+    return this.httpClient.post<Customer>(`${this.baseUrl}`, customer, this.httpOptions).pipe(catchError(this.errorHandler));
   }
 
   update(id, customer): Observable<Customer> {
-    return this.httpClient.put<Customer>(`${this.baseUrl}/${id}`, JSON.stringify(customer), this.httpOptions).pipe(catchError(this.errorHandler))
+    return this.httpClient.put<Customer>(`${this.baseUrl}/${id}`, customer, this.httpOptions).pipe(catchError(this.errorHandler));
   }
 
-  getById(id): Observable<Customer> {
-    return this.httpClient.get<Customer>(`${this.baseUrl}/${id}`).pipe(catchError(this.errorHandler))
+  getById(id: number): Observable<Customer> {
+    return this.httpClient.get<Customer>(`${this.baseUrl}/${id}`, this.httpOptions).pipe(catchError(this.errorHandler));
   }
 
   getByFunkyId(funkyId: string): Observable<Customer> {
-    return this.httpClient.get<Customer>(`${this.baseUrl}/funky/${funkyId}`).pipe(catchError(this.errorHandler))
+    return this.httpClient.get<Customer>(`${this.baseUrl}/funky/${funkyId}`, this.httpOptions).pipe(catchError(this.errorHandler));
   }
 
   getAll(): Observable<Customer[]> {

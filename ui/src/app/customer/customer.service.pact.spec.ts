@@ -1,49 +1,37 @@
 import { TestBed } from '@angular/core/testing';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { RouterTestingModule } from '@angular/router/testing';
 import { HttpClientModule } from '@angular/common/http';
-import { CustomerService } from './customer.service';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Customer } from './customer';
+import { CustomerService } from './customer.service';
 import { Matchers, PactWeb } from '@pact-foundation/pact-web';
-import {FormsModule, ReactiveFormsModule} from "@angular/forms";
-import {BrowserDynamicTestingModule, platformBrowserDynamicTesting} from "@angular/platform-browser-dynamic/testing";
+
 
 describe('CustomerServicePact', () => {
 
   let provider;
 
   // Setup Pact mock server for this service
-  beforeAll(function (done) {
+  beforeAll(async () => {
 
     provider = new PactWeb({
+      port: 1235,
       host: '127.0.0.1',
-      port: 3000,
-      cors: true,
-      logLevel: 'debug'
+      logLevel: 'debug',
+      spec: 2
     });
 
     // required for slower CI environments
-    setTimeout(done, 800000);
+    await new Promise(resolve => setTimeout(resolve, 200000));
 
     // Required if run with `singleRun: false`
-    //provider.removeInteractions();
-
-    provider.setup()
+    await provider.removeInteractions();
   });
 
   // Configure Angular Testbed for this service
   beforeEach(() => {
-    TestBed.resetTestEnvironment();
-    TestBed.initTestEnvironment(BrowserDynamicTestingModule,
-      platformBrowserDynamicTesting());
-
     TestBed.configureTestingModule({
       imports: [
-        HttpClientModule,
-        HttpClientTestingModule,
-        FormsModule,
-        ReactiveFormsModule,
-        RouterTestingModule
+        HttpClientModule
       ],
       providers: [
         CustomerService
@@ -52,18 +40,13 @@ describe('CustomerServicePact', () => {
   });
 
   // Verify mock service
-  afterEach((done) => {
-    provider.verify().then(done, e => done.fail(e));
+  afterEach(async () => {
+    await provider.verify();
   });
 
   // Create contract
-  afterAll(function (done) {
-    provider.finalize()
-      .then(function () {
-        done();
-      }, function (err) {
-        done.fail(err);
-      });
+  afterAll(async () => {
+    await provider.finalize();
   });
 
   describe('getCustomer()', () => {
@@ -72,18 +55,18 @@ describe('CustomerServicePact', () => {
 
     const expectedCustomer: Customer = {
       id: 1,
-      firstName: 'Jeff',
-      lastName: 'Lyte',
+      firstname: 'Jeff',
+      lastname: 'Lyte',
       email: 'jeff_lyte@mail.com'
     };
 
-    beforeAll((done) => {
+    beforeAll(async () => {
       provider.addInteraction({
         state: `customer 1 exists`,
         uponReceiving: 'a request to GET a customer',
         withRequest: {
           method: 'GET',
-          path: `/customers/${customerId}`
+          path: `/api/customers/${customerId}`
         },
         willRespondWith: {
           status: 200,
@@ -92,16 +75,13 @@ describe('CustomerServicePact', () => {
           },
           body: Matchers.like(expectedCustomer)
         }
-      }).then(done, error => done.fail(error));
+      });
     });
 
-    it('should get a customer', function (done) {
-      const customerService:CustomerService = TestBed.inject(CustomerService);
-      customerService.getCustomer(customerId).subscribe(response => {
+    it('should get a customer', async () => {
+      const customerService:CustomerService = TestBed.get(CustomerService);
+      await customerService.getById(customerId).toPromise().then(response => {
         expect(response).toEqual(expectedCustomer);
-        done();
-      }, error => {
-        done.fail(error);
       });
     });
   });
@@ -112,19 +92,19 @@ describe('CustomerServicePact', () => {
 
     const expectedCustomer: Customer = {
       id: 13,
-      firstName: 'Sonn',
-      lastName: 'Onlie',
-      email: 'sonn_onlie@mail.com',
+      firstname: 'Son',
+      lastname: 'Orous',
+      email: 'sonorous@mail.com',
       funkyId: '0yswEm7ET4'
     };
 
-    beforeAll((done) => {
+    beforeAll(async () => {
       provider.addInteraction({
         state: `customer with funky id '0yswEm7ET4' exists`,
         uponReceiving: 'a request to GET a customer by funky id',
         withRequest: {
           method: 'GET',
-          path: `/customers/funky/${customerId}`
+          path: `/api/customers/funky/${customerId}`
         },
         willRespondWith: {
           status: 200,
@@ -133,16 +113,13 @@ describe('CustomerServicePact', () => {
           },
           body: Matchers.somethingLike(expectedCustomer)
         }
-      }).then(done, error => done.fail(error));
+      });
     });
 
-    it('should get a customer by funky id', function (done) {
+    it('should get a customer', async () => {
       const customerService:CustomerService = TestBed.inject(CustomerService);
-      customerService.getCustomerByFunkyId(customerId).subscribe(response => {
+      await customerService.getByFunkyId(customerId).toPromise().then(response => {
         expect(response).toEqual(expectedCustomer);
-        done();
-      }, error => {
-        done.fail(error);
       });
     });
   });
@@ -150,20 +127,20 @@ describe('CustomerServicePact', () => {
   describe('createCustomer()', () => {
 
     const expectedCustomer: Customer = {
-      firstName: 'Ross',
-      lastName: 'Sam',
+      firstname: 'Ross',
+      lastname: 'Sam',
       email: 'ross_sam@mail.com'
     };
 
-    const createdCustomerId = 100;
+    const createdCustomer: Customer = { ...expectedCustomer, id: 100 };
 
-    beforeAll((done) => {
+    beforeAll(async () => {
       provider.addInteraction({
         state: `provider accepts a new customer`,
         uponReceiving: 'a request to POST a customer',
         withRequest: {
           method: 'POST',
-          path: '/customers',
+          path: '/api/customers',
           body: expectedCustomer,
           headers: {
             'Content-Type': 'application/json'
@@ -174,61 +151,55 @@ describe('CustomerServicePact', () => {
           headers: {
             'Content-Type': 'application/json'
           },
-          body: Matchers.somethingLike({
-            id: createdCustomerId
-          })
+          body: Matchers.somethingLike(createdCustomer)
         }
-      }).then(done, error => done.fail(error));
+      });
     });
 
-    it('should create a customer', function(done) {
+    it('should create a customer', async () => {
       const customerService:CustomerService = TestBed.inject(CustomerService);
-      customerService.createCustomer(expectedCustomer).subscribe((response) => {
-        expect(response).toEqual(createdCustomerId);
-        done();
-      }, error => {
-        done.fail(error);
+      await customerService.create(expectedCustomer).toPromise().then(response => {
+        expect(response).toEqual(createdCustomer);
       });
     });
   });
 
   describe('update()', () => {
 
+    const customerId = 42;
     const expectedCustomer: Customer = {
       id: 42,
-      firstName: 'Milli',
-      lastName: 'Nesa',
+      firstname: 'Milli',
+      lastname: 'Nesa',
       email: 'milli_nesa@mail.com'
     };
 
-    beforeAll((done) => {
+    beforeAll(async () => {
       provider.addInteraction({
         state: `customer 42 exists`,
         uponReceiving: 'a request to PUT a customer',
         withRequest: {
           method: 'PUT',
-          path: '/customers/42',
+          path: `/api/customers/${customerId}`,
           headers: {'Content-Type': 'application/json'},
           body: Matchers.somethingLike(expectedCustomer)
         },
         willRespondWith: {
           status: 200,
           headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json'
           },
           body: Matchers.somethingLike(expectedCustomer)
         }
-      }).then(done, error => done.fail(error));
+      });
     });
 
-    it('should update a customer', function(done) {
+    it('should update a customer',  async () => {
       const customerService:CustomerService = TestBed.inject(CustomerService);
-      customerService.updateCustomer(expectedCustomer, 42).subscribe((response) => {
+      await customerService.update(42, expectedCustomer).toPromise().then(response => {
         expect(response).toEqual(expectedCustomer);
-        done();
-      }, error => {
-        done.fail(error);
       });
     });
   });
+
 });

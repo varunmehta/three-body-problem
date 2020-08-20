@@ -1,9 +1,9 @@
 export interface Customer {
-  id: number;
+  id?: number;
   firstname: string;
   lastname: string;
   email:string;
-  funkyId: string;
-  createdOn: string;
-  updatedOn: string;
+  funkyId?: string;
+  createdOn?: string;
+  updatedOn?: string;
 }

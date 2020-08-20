@@ -8,6 +8,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 
@@ -27,8 +28,10 @@ public class Customer {
 	private int id;
 
 	@NonNull
+	@JsonProperty("firstname")
 	private String firstName;
 	@NonNull
+	@JsonProperty("lastname")
 	private String lastName;
 	@NonNull
 	private String email;

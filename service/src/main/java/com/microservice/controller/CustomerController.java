@@ -23,12 +23,12 @@ public class CustomerController {
 	@Autowired
 	private CustomerService customerService;
 
-	@GetMapping(value = "/customers", produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(value = "/api/customers", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<Customer>> getCustomers() {
 		return new ResponseEntity<List<Customer>>(customerService.getCustomers(), HttpStatus.OK);
 	}
 
-	@GetMapping(value = "/customers/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(value = "/api/customers/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Customer> getCustomer(@PathVariable int id) {
 		Optional<Customer> customer = customerService.getCustomerById(id);
 
@@ -39,7 +39,7 @@ public class CustomerController {
 		}
 	}
 
-	@PostMapping(value = "/customers")
+	@PostMapping(value = "/api/customers")
 	public ResponseEntity<Customer> createCustomer(@RequestBody Customer customer) {
 		return new ResponseEntity<Customer>(customerService.upsertCustomer(customer), HttpStatus.CREATED);
 	}
@@ -50,7 +50,7 @@ public class CustomerController {
 	 * @param customer
 	 * @return
 	 */
-	@PutMapping(value = "/customers/{id}")
+	@PutMapping(value = "/api/customers/{id}")
 	public ResponseEntity<Customer> updateCustomer(@RequestBody Customer customer, @PathVariable int id) {
 
 		// basic validation to check if ids in request and url don't match.
@@ -60,7 +60,7 @@ public class CustomerController {
 		return new ResponseEntity<Customer>(customerService.upsertCustomer(customer), HttpStatus.OK);
 	}
 
-	@GetMapping(value = "/customers/funky/{funkyId}")
+	@GetMapping(value = "/api/customers/funky/{funkyId}")
 	public ResponseEntity<Customer> getCustomerByFunkyId(@PathVariable String funkyId) {
 		Optional<Customer> customer = customerService.getCustomerByFunkyId(funkyId);
 		if (customer.isPresent()) {

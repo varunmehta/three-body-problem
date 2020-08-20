@@ -8,3 +8,6 @@ spring:
     url: "jdbc:tc:postgresql:10.11:///postgres_db"
     username: postgres
     password: postgres
+
+server:
+  port: 8082

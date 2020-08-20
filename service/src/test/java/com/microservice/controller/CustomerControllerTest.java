@@ -42,8 +42,8 @@ public class CustomerControllerTest {
 
 		when(service.getCustomerById(id)).thenReturn(optionalCustomer);
 
-		this.mvc.perform(get("/customers/" + id).contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk())
-				.andExpect(jsonPath("$.firstName", is(customer.getFirstName())));
+		this.mvc.perform(get("/api/customers/" + id).contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk())
+				.andExpect(jsonPath("$.firstname", is(customer.getFirstName())));
 	}
 
 	@Test
@@ -53,7 +53,7 @@ public class CustomerControllerTest {
 		Optional<Customer> optionalCustomer = Optional.ofNullable(null);
 		when(service.getCustomerById(id)).thenReturn(optionalCustomer);
 
-		this.mvc.perform(get("/customers/" + id).contentType(MediaType.APPLICATION_JSON))
+		this.mvc.perform(get("/api/customers/" + id).contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isNotFound());
 	}
 

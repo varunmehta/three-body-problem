@@ -1,4 +1,4 @@
-package com.microservice.repository;
+/*package com.microservice.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertNotNull;
@@ -44,6 +44,7 @@ public class CustomerRepositoryIntegrationTest {
 		// then
 		assertNotNull(found.get());
 		assertThat(found.get().getEmail()).isEqualTo(customer.getEmail());
-	}
+
 
 }
+        }*/

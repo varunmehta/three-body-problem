@@ -21,6 +21,7 @@ pipeline {
               //withNPM() {
               sh 'ls -l /certs'
               sh 'whoami'
+              sh 'sudo chown -R $USER /usr/local/'
               sh 'npm config -g set cafile /certs/nscacert_combined.pem'
               sh 'npm install'
               sh 'npm run-script build --prod'

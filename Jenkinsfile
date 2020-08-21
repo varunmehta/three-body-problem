@@ -19,7 +19,7 @@ pipeline {
           steps {
             dir ('ui') {
               //withNPM() {
-              sh 'ls -l /npm'
+              sh 'ls -l /certs'
               sh 'whoami'
               sh 'npm config -g set cafile /certs/nscacert_combined.pem'
               sh 'npm install'

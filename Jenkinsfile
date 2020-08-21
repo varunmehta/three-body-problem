@@ -1,8 +1,13 @@
 pipeline {
-  agent { docker { image 'node:10.22.0' } }
-      environment {
-          HOME = '.'
+  agent {
+      docker {
+        image 'node:10.22.0'
+        args '-v /certs/npm:/certs'
       }
+  }
+  environment {
+      HOME = '.'
+  }
 
   stages {
 
@@ -14,9 +19,9 @@ pipeline {
           steps {
             dir ('ui') {
               //withNPM() {
-              /* sh 'ls -l /npm'
+              sh 'ls -l /npm'
               sh 'whoami'
-              sh 'npm config -g set cafile /npm/nscacert_combined.pem' */
+              sh 'npm config -g set cafile /certs/nscacert_combined.pem'
               sh 'npm install'
               sh 'npm run-script build --prod'
             //}

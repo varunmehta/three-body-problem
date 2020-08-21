@@ -18,17 +18,11 @@ pipeline {
 
       stages {
 
-      stage('Review node and npm installations') {
-        steps {
-          nodejs(nodeJSInstallationName: 'node10') {
-            sh 'npm -v'  //substitute with your code
-            sh 'node -v'
-          }
-        }
-      }
-
         stage ('Package') {
           steps {
+          nodejs(nodeJSInstallationName: 'node10') {
+            sh 'npm -v'
+            sh 'node -v'
             dir ('ui') {
               //withNPM(npmrcConfig:'4a13e8f2-bea4-4ee2-b5ac-25b6a7c1d373') {
               //sh 'ls -l /certs'
@@ -38,6 +32,7 @@ pipeline {
               sh 'npm install'
               sh 'npm run-script build --prod'
               //}
+            }
             }
           }
         }

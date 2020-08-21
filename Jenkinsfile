@@ -19,7 +19,7 @@ pipeline {
         stage ('Package') {
           steps {
             dir ('ui') {
-              withNPM(npmrcConfig:'MyNpmrcConfig') {
+              withNPM(npmrcConfig:'4a13e8f2-bea4-4ee2-b5ac-25b6a7c1d373') {
               //sh 'ls -l /certs'
               sh 'whoami'
               //sh 'sudo chown -R $USER /usr/local/'

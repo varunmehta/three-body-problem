@@ -1,5 +1,8 @@
 pipeline {
-  agent any
+  agent { docker { image 'node:10.22.0' } }
+      environment {
+          HOME = '.'
+      }
 
   stages {
 
@@ -10,13 +13,13 @@ pipeline {
         stage ('Package') {
           steps {
             dir ('ui') {
-              withNPM() {
+              //withNPM() {
               /* sh 'ls -l /npm'
               sh 'whoami'
               sh 'npm config -g set cafile /npm/nscacert_combined.pem' */
               sh 'npm install'
               sh 'npm run-script build --prod'
-            }
+            //}
             }
           }
         }

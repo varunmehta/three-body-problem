@@ -1,10 +1,11 @@
 pipeline {
-  agent {
+  agent any
+/*   {
       docker {
         image 'node:10.22.0'
         args '-v /certs/npm:/certs'
       }
-  }
+  } */
   environment {
       HOME = '.'
   }
@@ -18,14 +19,14 @@ pipeline {
         stage ('Package') {
           steps {
             dir ('ui') {
-              //withNPM() {
-              sh 'ls -l /certs'
+              withNPM(npmrcConfig:'MyNpmrcConfig') {
+              //sh 'ls -l /certs'
               sh 'whoami'
-              sh 'sudo chown -R $USER /usr/local/'
-              sh 'npm config -g set cafile /certs/nscacert_combined.pem'
+              //sh 'sudo chown -R $USER /usr/local/'
+              //sh 'npm config -g set cafile /certs/nscacert_combined.pem'
               sh 'npm install'
               sh 'npm run-script build --prod'
-            //}
+              }
             }
           }
         }

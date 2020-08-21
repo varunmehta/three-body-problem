@@ -29,7 +29,7 @@ pipeline {
               sh 'whoami'
               //sh 'sudo chown -R $USER /usr/local/'
               sh 'npm config set ca null'
-              sh 'npm config -g set cafile /certs/nscacert_combined.pem'
+              //sh 'npm config -g set cafile /certs/nscacert_combined.pem'
               sh 'npm install'
               sh 'npm run-script build --prod'
               //}

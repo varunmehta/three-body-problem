@@ -1,8 +1,8 @@
 pipeline {
     agent any
 
-    tools {nodejs "node"}
-/*   {
+    /* tools {nodejs "node"}
+  {
       docker {
         image 'node:10.22.0'
         args '-v /certs/npm:/certs'
@@ -17,6 +17,15 @@ pipeline {
     stage('Build & Test UI') {
 
       stages {
+
+      stage('Review node and npm installations') {
+        steps {
+          nodejs(nodeJSInstallationName: 'node10') {
+            sh 'npm -v'  //substitute with your code
+            sh 'node -v'
+          }
+        }
+      }
 
         stage ('Package') {
           steps {

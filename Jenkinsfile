@@ -7,10 +7,10 @@ pipeline {
         image 'node:10.22.0'
         args '-v /certs/npm:/certs'
       }
-  }
+  }*/
   environment {
       HOME = '.'
-  }*/
+  }
 
   stages {
 

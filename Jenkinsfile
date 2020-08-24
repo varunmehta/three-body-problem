@@ -22,8 +22,6 @@ pipeline {
           steps {
           nodejs(nodeJSInstallationName: 'node10') {
             dir ('ui') {
-              //withNPM(npmrcConfig:'4a13e8f2-bea4-4ee2-b5ac-25b6a7c1d373') {
-              //sh 'ls -l /certs'
               sh 'whoami'
               sh 'npm config set cafile /certs/npm/nscacert_combined.pem'
               sh 'npm install'
@@ -36,20 +34,25 @@ pipeline {
 
         stage('Run UI Tests') {
           steps {
+          nodejs(nodeJSInstallationName: 'node10') {
             dir ('ui') {
               sh 'npm run test -- --no-watch --no-progress --browsers=ChromeHeadlessCI'
               sh 'npm run e2e -- --protractor-config=e2e/protractor-ci.conf.js'
+            }
             }
           }
         }
 
         stage('Publish Pacts') {
           steps {
+          sh 'echo ${BRANCH_NAME}'
+          nodejs(nodeJSInstallationName: 'node10') {
             dir ('ui') {
               sh '''pact-broker publish ./pacts
               --consumer-app-version=${GIT_COMMIT}
               --broker-base-url=pact-broker
               --tag=${BRANCH_NAME}'''
+            }
             }
           }
         }

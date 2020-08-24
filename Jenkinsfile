@@ -25,7 +25,7 @@ pipeline {
               //withNPM(npmrcConfig:'4a13e8f2-bea4-4ee2-b5ac-25b6a7c1d373') {
               //sh 'ls -l /certs'
               sh 'whoami'
-              //sh 'npm config -g set cafile /certs/nscacert_combined.pem'
+              sh 'npm config set cafile /certs/npm/nscacert_combined.pem'
               sh 'npm install'
               sh 'npm run-script build --prod'
               //}

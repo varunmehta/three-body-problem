@@ -76,7 +76,7 @@ services:
       - jenkins-data:/var/jenkins_home
       - jenkins-docker-certs:/certs/client:ro
       - ${PWD}:/local-repo
-      # - /Users/dami.okuneye/.npm/:/certs/npm
+      - /Users/dami.okuneye/.npm/:/certs/npm
 
   pact-broker:
     image: pactfoundation/pact-broker

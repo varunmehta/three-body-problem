@@ -3,6 +3,6 @@ spring:
     name: trisolar
 aws:
   paramstore: 
-    prefix: 
+    prefix: /spring 
     name: 
-    enabled:
+    enabled: true

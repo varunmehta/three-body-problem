@@ -1,0 +1,138 @@
+{
+  "consumer": {
+    "name": "ui"
+  },
+  "provider": {
+    "name": "CustomerService"
+  },
+  "interactions": [
+    {
+      "description": "a request to GET a customer by funky id",
+      "providerState": "customer with funky id '0yswEm7ET4' exists",
+      "request": {
+        "method": "GET",
+        "path": "/api/customers/funky/0yswEm7ET4"
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "id": 13,
+          "firstname": "Son",
+          "lastname": "Orous",
+          "email": "sonorous@mail.com",
+          "funkyId": "0yswEm7ET4"
+        },
+        "matchingRules": {
+          "$.body": {
+            "match": "type"
+          }
+        }
+      }
+    },
+    {
+      "description": "a request to GET a customer",
+      "providerState": "customer 1 exists",
+      "request": {
+        "method": "GET",
+        "path": "/api/customers/1"
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "id": 1,
+          "firstname": "Jeff",
+          "lastname": "Lyte",
+          "email": "jeff_lyte@mail.com"
+        },
+        "matchingRules": {
+          "$.body": {
+            "match": "type"
+          }
+        }
+      }
+    },
+    {
+      "description": "a request to POST a customer",
+      "providerState": "provider accepts a new customer",
+      "request": {
+        "method": "POST",
+        "path": "/api/customers",
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "firstname": "Ross",
+          "lastname": "Sam",
+          "email": "ross_sam@mail.com"
+        }
+      },
+      "response": {
+        "status": 201,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "firstname": "Ross",
+          "lastname": "Sam",
+          "email": "ross_sam@mail.com",
+          "id": 100
+        },
+        "matchingRules": {
+          "$.body": {
+            "match": "type"
+          }
+        }
+      }
+    },
+    {
+      "description": "a request to PUT a customer",
+      "providerState": "customer 42 exists",
+      "request": {
+        "method": "PUT",
+        "path": "/api/customers/42",
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "id": 42,
+          "firstname": "Milli",
+          "lastname": "Nesa",
+          "email": "milli_nesa@mail.com"
+        },
+        "matchingRules": {
+          "$.body": {
+            "match": "type"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "id": 42,
+          "firstname": "Milli",
+          "lastname": "Nesa",
+          "email": "milli_nesa@mail.com"
+        },
+        "matchingRules": {
+          "$.body": {
+            "match": "type"
+          }
+        }
+      }
+    }
+  ],
+  "metadata": {
+    "pactSpecification": {
+      "version": "2.0.0"
+    }
+  }
+}
